@@ -1,0 +1,2 @@
+* xref:index.adoc[说明]
+* xref:influxdb-quickstart-tutorial.adoc[InfluxDB V2快速入门]
