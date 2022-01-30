@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>InfluxDB V2快速入门 :: Influxdb简明教程</title>
+    <meta name="generator" content="Antora 3.0.0">
+    <link rel="stylesheet" href="../../_/css/site.css">
+    <script>var uiRootPath = '../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="../..">Influxdb简明教程</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="#">Home</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Products</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Product A</a>
+            <a class="navbar-item" href="#">Product B</a>
+            <a class="navbar-item" href="#">Product C</a>
+          </div>
+        </div>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">Services</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="#">Service A</a>
+            <a class="navbar-item" href="#">Service B</a>
+            <a class="navbar-item" href="#">Service C</a>
+          </div>
+        </div>
+        <div class="navbar-item">
+          <span class="control">
+            <a class="button is-primary" href="#">Download</a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="archives" data-version="1st">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="index.html">导航</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="index.html">说明</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <a class="nav-link" href="influxdb-quickstart-tutorial.html">InfluxDB V2快速入门</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">导航</span>
+    <span class="version">1st</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="index.html">导航</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="index.html">1st</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">导航</a></li>
+    <li><a href="influxdb-quickstart-tutorial.html">InfluxDB V2快速入门</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="https://github.com/MetaTDD/influxdb-tutorial/edit/1st/docs/modules/ROOT/pages/influxdb-quickstart-tutorial.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">InfluxDB V2快速入门</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>InfluxDB是开源的时间序列数据库，可用于实时查看堆栈，传感器和系统的指标查看。</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>优势</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>时序数据库的优势，在于处理指标数据的聚合，并且读写效率非常高。</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>特点</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>influxDB 不支持数据库的更新操作，毕竟时间数据只能随着时间产生新数据，肯定无法对过去的数据修改。</p>
+</div>
+<div class="paragraph">
+<p>从数据结构上说，时间序列数据数据没有单一的主键标识，必须包含时间戳，数据只能和时间戳进行关联，不适合普通业务数据。</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>用途</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>时间序列数据库可以作为特定场景（比如监控、统计）的主存储，也可以和关系型数据库搭配使用，作为一个辅助数据源，保存业务系统的指标数据。</p>
+</div>
+<div class="paragraph">
+<p>只要符合写多读少、无事务要求、海量高并发持续写入、基于时间区间聚合分析以及基于时间区间快速查询的数据都可以使用Influx。</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>监控</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>influxdb+telegraf+grafana组合</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_数据模型"><a class="anchor" href="#_数据模型"></a>数据模型</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>InfluxDB里存储的数据被称为时间序列数据，其包含一个数值，就像CPU的load值或是温度值类似的。
+时序数据有零个或多个数据点，每一个都是一个指标值。</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>time(一个时间戳) 【类比SQL中的主键】</p>
+</li>
+<li>
+<p>至少一个k-v格式的field(也即指标的数值例如 “value=0.64”或者“temperature=21.2”) 【类比SQL中的列】</p>
+</li>
+<li>
+<p>零个或多个tag，可以理解为列。与field不同的是，tag理解为一个对象，并且tag是被索引起来的。</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_下载安装"><a class="anchor" href="#_下载安装"></a>下载安装</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>官方下载地址:</p>
+</div>
+<div class="paragraph">
+<p>Downloads (influxdata.com)
+<a href="https://portal.influxdata.com/downloads/" class="bare">https://portal.influxdata.com/downloads/</a></p>
+</div>
+<div class="paragraph">
+<p>安装步骤可参考官方文档，推荐使用docker安装，方便后续跨平台迁移部署。</p>
+</div>
+<div class="paragraph">
+<p>V2安装后的启动端口默认是8086， 安装后可通过浏览器访问并进行相关设置。</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_v2和和v1"><a class="anchor" href="#_v2和和v1"></a>V2和和V1</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_查询语法"><a class="anchor" href="#_查询语法"></a>查询语法</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>V1: 类SQL语法</p>
+</li>
+<li>
+<p>V2: Flux语法
+v2名词
+推荐查阅v2官方文档：
+InfluxDB OSS 2.0 Documentation (influxdata.com)
+bucket
+所有 InfluxDB 数据都存储在一个存储桶中。相当与sql中的database。
+系统存储桶
+_monitoring system bucket :该_monitoring系统桶存储InfluxDB数据用于 监控数据并发送警报。数据保留：7天
+_tasks system bucket: 该_tasks系统桶存储与数据InfluxDB任务的执行。数据保留：1天
+bucket schema
+具有明确的schema-type的存储桶需要为每个度量指定显式架构。
+organization
+InfluxDB组织是一组用户的工作区。
+measurement
+相当与sql中的table
+与传统的关系型数据库不同之处在于，在InfluxDB里，你可以有几百万的measurements，你不用事先定义数据的scheme，并且null值不会被存储。
+timestamp
+​	时间戳
+field key
+属性键
+field value
+属性值
+field set
+字段集
+tag key
+标签键
+tag value
+标签值
+tag set
+标签集
+series
+point
+数据点
+写数据到InfluxDB
+使用行协议格式( line protocol format )去写数据到InfluxDB,每行表示一个数据点，每个数据点需要测量(measurement)和字段集(field set)，也可能包含标签集(tag set)和时间戳‎‎(timestamp)。
+行协议格式如下：</p>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">:</dt>
+<dd>
+<p>warningtag和field 之间有一个空格:::
+例如：</p>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">:</dt>
+<dd>
+<p>tip当写数据到InfluxDB时，推荐每个数据点都带上时间戳‎‎，如过数据点没有时间戳‎‎当会使用InfluxDB宿主机的时间戳（UTC):::
+时间戳精度
+ns - 纳秒
+us - 微秒
+ms - 毫秒
+s - 秒
+写数据的方式
+csv
+api
+cli
+&#8230;&#8203;
+以cli作为写数据进行测试，其中分为：
+行协议单行写入</p>
+</dd>
+</dl>
+</div>
+</dd>
+</dl>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>行协议来自文件写入</p>
+</div>
+<div class="paragraph">
+<p>行协议从来自注释的csv文件</p>
+</div>
+<div class="paragraph">
+<p>Flux查询语句
+Flux 是 InfluxData 的功能性数据脚本语言，设计用于查询、分析和处理数据，它是InfluxQL 和其他类似 SQL 的查询语言的替代品。
+InfluxDB 之所以创造 Flux 语法，而不使用 SQL，主要有两个原因：
+更强的查询功能：SQL 无法轻松完成时序查询。
+时间序列的查询需要基于流的函数模型，而不是 SQL 的代数模型。
+SQL和FLUX的对比可以参考：
+SQL vs. Flux: Choose the right query language for time-series data (timescale.com)
+数据源</p>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">:</dt>
+<dd>
+<p>warning单独使用会报错，需要加上范围(range)。:::
+时间查询
+查询example-bucket桶过去一小时的数据。</p>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">:</dt>
+<dd>
+<p>danger查询的数据源的时候必须带个range不然报错。:::
+查询example-bucket桶过去1小时到过去10分钟的数据。</p>
+</dd>
+</dl>
+</div>
+</dd>
+</dl>
+</div>
+<div class="paragraph">
+<p>查询example-bucket桶两个绝对时间的数据</p>
+</div>
+<div class="paragraph">
+<p>数据过滤
+将范围数据传递到filter()函数中，以根据数据属性或列缩小结果范围。filter()函数有一个参数 ，fn它需要一个匿名函数，该函数具有基于列或属性过滤数据的逻辑。
+匹配规则：</p>
+</div>
+<div class="paragraph">
+<p>单个过滤</p>
+</div>
+<div class="paragraph">
+<p>多重过滤</p>
+</div>
+<div class="paragraph">
+<p>按cpu度量、usage_system字段和cpu-total标记值过滤</p>
+</div>
+<div class="paragraph">
+<p>分组</p>
+</div>
+<div class="paragraph">
+<p>属性过滤</p>
+</div>
+<div class="paragraph">
+<p>指定查询数据
+Flux 的yield()函数将过滤后的表作为查询结果输出。
+yield()只有在同一个 Flux 查询中包含多个查询时，才需要显式调用。</p>
+</div>
+<div class="paragraph">
+<p>这里yield()可以省略，会隐式调用。
+数据转换
+使用函数，将数据聚合为平均值、下采样数据等。
+更新范围从最后一小时拉取数据</p>
+</div>
+<div class="paragraph">
+<p>以五分钟为间隔的窗口化数据</p>
+</div>
+<div class="paragraph">
+<p>聚合窗口数据</p>
+</div>
+<div class="paragraph">
+<p>添加时间列到聚合函数</p>
+</div>
+<div class="paragraph">
+<p>取消窗口聚合表，将所有点收集到一个无限的窗口中</p>
+</div>
+<div class="paragraph">
+<p>辅助函数(将聚合或选择器函数应用于固定的时间窗口,通过every指定窗口的持续时间)</p>
+</div>
+<div class="paragraph">
+<p>(完）</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_参考"><a class="anchor" href="#_参考"></a>参考</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>InfluxDB OSS 2.0 Documentation (influxdata.com)
+<a href="https://docs.influxdata.com/influxdb/v2.0/" class="bare">https://docs.influxdata.com/influxdb/v2.0/</a></p>
+</div>
+<div class="paragraph">
+<p>SQL vs. Flux: Choose the right query language for time-series data (timescale.com)
+<a href="https://blog.timescale.com/blog/sql-vs-flux-influxdb-query-language-time-series-database-290977a01a8a/" class="bare">https://blog.timescale.com/blog/sql-vs-flux-influxdb-query-language-time-series-database-290977a01a8a/</a></p>
+</div>
+<div class="paragraph">
+<p>【InfluxDB V2.0】介绍与使用，flux查询、数据可视化_xbl的博客-CSDN博客
+<a href="https://blog.csdn.net/qq_37822090/article/details/119035422" class="bare">https://blog.csdn.net/qq_37822090/article/details/119035422</a></p>
+</div>
+<div class="paragraph">
+<p>InfluxDB数据模型和实践 - 知乎 (zhihu.com)
+<a href="https://zhuanlan.zhihu.com/p/180071761" class="bare">https://zhuanlan.zhihu.com/p/180071761</a></p>
+</div>
+</div>
+</div>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <p>This page was built using the Antora default UI.</p>
+  <p>The source code for this UI is licensed under the terms of the MPL-2.0 license.</p>
+</footer>
+<script src="../../_/js/site.js"></script>
+<script async src="../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
