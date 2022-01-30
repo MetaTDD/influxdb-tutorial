@@ -1,0 +1,14 @@
+site:
+  title: Influxdb简明教程
+  start_page: archives::index.adoc
+content:
+  sources:
+  - url: https://github.com/MetaTDD/influxdb-tutorial.git
+    branches: [1st]
+    start_path: docs
+
+
+ui:
+  bundle:
+    url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/HEAD/raw/build/ui-bundle.zip?job=bundle-stable
+    snapshot: true
